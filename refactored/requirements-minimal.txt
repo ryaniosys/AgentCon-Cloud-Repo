@@ -1,0 +1,11 @@
+# Minimal Requirements for AgentCon Demo
+
+# Core dependencies
+agent-framework>=1.0.0b251204
+python-dotenv>=1.0.0
+
+# For refactored version (optional)
+pyyaml>=6.0
+
+# Optional: Enhanced error handling
+httpx>=0.24.0

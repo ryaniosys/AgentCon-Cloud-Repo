@@ -10,23 +10,22 @@ load_dotenv()
 def get_text(response):
     return response.text if hasattr(response, 'text') and response.text else ""
 
-class AgentRole(Enum):
-    CRITIC = "architecture_critic"
-    FIXER = "architecture_fixer"
-
 class AgentFactory:
-    """Factory pattern: centralized agent creation with shared config"""
+    """Factory pattern: centralized agent creation with multi-provider support"""
     
     def __init__(self, chat_client: OpenAIChatClient):
         self.chat_client = chat_client
         
+        # Track model capabilities
+        self.model_supports_copilot_messages = os.getenv("USE_OPENAI", "false").lower() == "true"
+        
         # All agent prompts in one place
         self.prompts = {
-            AgentRole.CRITIC: """You are an Azure Architecture Critic. 
+            "critic": """You are an Azure Architecture Critic. 
 Review for: security issues, wrong service choices, missing best practices.
 Keep brief with bullet points.""",
             
-            AgentRole.FIXER: """You are an Azure Architecture Fixer.
+            "fixer": """You are an Azure Architecture Fixer.
 Improve the architecture by:
 - Applying Azure Well-Architected Framework
 - Using managed services over IaaS
@@ -34,21 +33,40 @@ Improve the architecture by:
 Output: improved architecture description."""
         }
     
-    def create_agent(self, role: AgentRole) -> ChatAgent:
+    def create_agent(self, role: str) -> ChatAgent:
         """Create an agent by role - no duplication"""
         return ChatAgent(
             chat_client=self.chat_client,
             instructions=self.prompts[role],
-            name=role.value
+            name=role,
+            model_supports_copilot_messages=self.model_supports_copilot_messages
         )
+
+def create_chat_client():
+    """Create chat client from configured provider (OpenAI, Ollama, or Foundry Local)"""
+    use_openai = os.getenv("USE_OPENAI", "false").lower() == "true"
+    use_ollama = os.getenv("USE_OLLAMA", "false").lower() == "true"
+    
+    if use_openai:
+        model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        api_key = os.getenv("OPENAI_API_KEY")
+        print(f"🤖 Using OpenAI model: {model}")
+        return OpenAIChatClient(api_key=api_key, model_id=model)
+    elif use_ollama:
+        model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
+        base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+        print(f"🤖 Using Ollama model: {model}")
+        return OpenAIChatClient(api_key="dummy", model_id=model, base_url=base_url)
+    else:
+        model = os.getenv("LOCAL_MODEL", "gpt-oss-20b-generic-cpu:1")
+        base_url = os.getenv("LOCAL_BASE_URL", "http://localhost:56238/v1")
+        print(f"🤖 Using Foundry Local model: {model}")
+        return OpenAIChatClient(api_key="dummy", model_id=model, base_url=base_url)
 
 async def main():
     """Sequential pipeline with factory pattern"""
     
-    chat_client = OpenAIChatClient(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        model_id=os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    )
+    chat_client = create_chat_client()
     
     # Factory creates all agents
     factory = AgentFactory(chat_client)
@@ -70,7 +88,7 @@ async def main():
     print("\n" + "="*60)
     print("🔍 STEP 1: Architecture Critic")
     print("="*60)
-    critic = factory.create_agent(AgentRole.CRITIC)
+    critic = factory.create_agent("critic")
     critique_response = await critic.run(architecture)
     critique = get_text(critique_response)
     print(critique)
@@ -79,7 +97,7 @@ async def main():
     print("\n" + "="*60)
     print("🔧 STEP 2: Architecture Fixer")
     print("="*60)
-    fixer = factory.create_agent(AgentRole.FIXER)
+    fixer = factory.create_agent("fixer")
     fixer_input = f"Original:\n{architecture}\n\nCritique:\n{critique}"
     fixer_response = await fixer.run(fixer_input)
     improved = get_text(fixer_response)

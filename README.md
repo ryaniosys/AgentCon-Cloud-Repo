@@ -115,8 +115,69 @@ The demo demonstrates:
 ### Prerequisites
 
 - **Python 3.10+** (3.12 recommended)
-- **OpenAI API Key** (or Azure OpenAI credentials)
+- **One of the following model providers:**
+  - **OpenAI API Key** (Recommended for production)
+  - **Ollama** (Free, local - recommended for development)
+  - **Microsoft AI Foundry Local** (Enterprise on-premises)
 - **Git** (for cloning the repository)
+
+### 🤖 Model Provider Options
+
+This demo supports **3 different model providers**. Choose one based on your needs:
+
+| Provider | Cost | Quality | Setup | Best For |
+|----------|------|---------|-------|----------|
+| **OpenAI API** | $ (pay per token) | ⭐⭐⭐⭐⭐ Highest | 2 min | Production, premium quality |
+| **Ollama Local** | FREE | ⭐⭐⭐⭐ High | 5 min | Development, cost-free |
+| **Foundry Local** | Enterprise | ⭐⭐⭐⭐ High | On-prem | Enterprise, self-hosted |
+
+#### Option 1️⃣: Use **OpenAI** (Recommended for Production)
+
+1. Create `.env` file (copy from `.env.example`)
+2. Set `USE_OPENAI=true`
+3. Add your OpenAI API key: `OPENAI_API_KEY=sk-...`
+4. Optionally change model: `OPENAI_MODEL=gpt-4o-mini` (or `gpt-4o` for best quality)
+
+```bash
+USE_OPENAI=true
+OPENAI_API_KEY=sk-your-key-here
+OPENAI_MODEL=gpt-4o-mini
+USE_OLLAMA=false
+USE_FOUNDRY_LOCAL=false
+```
+
+#### Option 2️⃣: Use **Ollama** (Recommended for Local Development - FREE)
+
+1. **Install Ollama:** https://ollama.ai
+2. **Start Ollama server:**
+   ```bash
+   ollama serve
+   ```
+3. **Pull the model (in a new terminal):**
+   ```bash
+   ollama pull gpt-oss:20b
+   ```
+   _(Or use: `llama2`, `mistral`, `neural-chat`, etc.)_
+4. **Set `.env` file:**
+   ```
+   USE_OLLAMA=true
+   OLLAMA_MODEL=gpt-oss:20b
+   OLLAMA_BASE_URL=http://localhost:11434/v1
+   USE_OPENAI=false
+   USE_FOUNDRY_LOCAL=false
+   ```
+
+#### Option 3️⃣: Use **Microsoft Foundry Local** (Enterprise)
+
+1. Start your Foundry Local instance
+2. Set `.env` file:
+   ```
+   USE_FOUNDRY_LOCAL=true
+   LOCAL_BASE_URL=http://your-foundry:56238/v1
+   LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
+   USE_OPENAI=false
+   USE_OLLAMA=false
+   ```
 
 ### Step 1: Clone the Repository
 
@@ -169,13 +230,42 @@ This installs:
 - `mcp` - Model Context Protocol client
 - Additional dependencies (httpx, pydantic, etc.)
 
-### Step 5: Configure Environment Variables
+### Step 5: Configure Model Provider
 
 Create a `.env` file in the project root:
 
 ```bash
 # Copy from template
 cp .env.example .env
+```
+
+Then **choose ONE provider** and update `.env` accordingly:
+
+**For OpenAI (Production):**
+```env
+USE_OPENAI=true
+OPENAI_API_KEY=sk-proj-YOUR-KEY-HERE
+OPENAI_MODEL=gpt-4o-mini
+USE_OLLAMA=false
+USE_FOUNDRY_LOCAL=false
+```
+
+**For Ollama (Development - Recommended):**
+```env
+USE_OPENAI=false
+USE_OLLAMA=true
+OLLAMA_MODEL=gpt-oss:20b
+OLLAMA_BASE_URL=http://localhost:11434/v1
+USE_FOUNDRY_LOCAL=false
+```
+
+**For Foundry Local (Enterprise):**
+```env
+USE_OPENAI=false
+USE_OLLAMA=false
+USE_FOUNDRY_LOCAL=true
+LOCAL_BASE_URL=http://your-foundry:56238/v1
+LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
 ```
 
 Edit `.env` and add your OpenAI API key:
@@ -223,6 +313,83 @@ The demo will:
 ✅ PIPELINE COMPLETE
 ============================================================
 ```
+
+## 🤖 Model Providers: OpenAI, Ollama & Foundry Local
+
+### Understanding the Provider Architecture
+
+This demo supports **3 model providers** with seamless switching via environment variables:
+
+```
+┌─────────────────────────────────────────────────────┐
+│ Environment Variables (.env)                         │
+├─────────────────────────────────────────────────────┤
+│ Priority: OpenAI > Ollama > Foundry Local            │
+│                                                      │
+│ USE_OPENAI=true/false                              │
+│ USE_OLLAMA=true/false                              │
+│ USE_FOUNDRY_LOCAL=true/false                       │
+└─────────────────────────────────────────────────────┘
+```
+
+### Switching Between Providers
+
+#### Quick Switch to OpenAI
+```bash
+# Edit .env
+USE_OPENAI=true
+OPENAI_API_KEY=sk-proj-YOUR-KEY
+OPENAI_MODEL=gpt-4o-mini  # or gpt-4o for premium
+
+# Run
+python agentcon_demo.py
+```
+
+#### Quick Switch to Ollama
+```bash
+# Make sure Ollama is running
+ollama serve
+
+# In another terminal, pull a model (first time only)
+ollama pull gpt-oss:20b
+
+# Edit .env
+USE_OPENAI=false
+USE_OLLAMA=true
+OLLAMA_MODEL=gpt-oss:20b
+OLLAMA_BASE_URL=http://localhost:11434/v1
+
+# Run
+python agentcon_demo.py
+```
+
+#### Quick Switch to Foundry Local
+```bash
+# Make sure Foundry Local is running
+
+# Edit .env
+USE_OPENAI=false
+USE_OLLAMA=false
+USE_FOUNDRY_LOCAL=true
+LOCAL_BASE_URL=http://your-foundry-host:56238/v1
+LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
+
+# Run
+python agentcon_demo.py
+```
+
+### Provider Capabilities Matrix
+
+| Capability | OpenAI | Ollama GPT-OSS | Foundry Local |
+|-----------|--------|---|---|
+| Tool/Function Calling | ✅ Yes | ❌ No* | ❌ No* |
+| Copilot Multi-Channel Messages | ✅ Yes | ❌ No | ❌ No |
+| MCP Grounding | ✅ Yes | ✅ Yes | ✅ Yes |
+| Streaming Support | ✅ Yes | ✅ Yes | ✅ Yes |
+| Cost | $ per token | FREE | Enterprise |
+| Setup Complexity | ~2 min | ~5 min | Complex |
+
+*Note: GPT-OSS models don't support function calling, so MCP queries are handled via prompting instead of tool calls.
 
 ## 🖼️ Image Diagram Recognition
 

@@ -7,14 +7,32 @@ from agent_framework.openai import OpenAIChatClient
 
 load_dotenv()
 
+def create_chat_client():
+    """Create chat client from configured provider (OpenAI, Ollama, or Foundry Local)"""
+    use_openai = os.getenv("USE_OPENAI", "false").lower() == "true"
+    use_ollama = os.getenv("USE_OLLAMA", "false").lower() == "true"
+    
+    if use_openai:
+        model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        api_key = os.getenv("OPENAI_API_KEY")
+        print(f"🤖 Using OpenAI model: {model}")
+        return OpenAIChatClient(api_key=api_key, model_id=model)
+    elif use_ollama:
+        model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
+        base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+        print(f"🤖 Using Ollama model: {model}")
+        return OpenAIChatClient(api_key="dummy", model_id=model, base_url=base_url)
+    else:
+        model = os.getenv("LOCAL_MODEL", "gpt-oss-20b-generic-cpu:1")
+        base_url = os.getenv("LOCAL_BASE_URL", "http://localhost:56238/v1")
+        print(f"🤖 Using Foundry Local model: {model}")
+        return OpenAIChatClient(api_key="dummy", model_id=model, base_url=base_url)
+
 async def main():
     """Single agent that critiques Azure architecture"""
     
-    # Initialize OpenAI client
-    chat_client = OpenAIChatClient(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        model_id=os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    )
+    # Initialize chat client (auto-detects provider from env vars)
+    chat_client = create_chat_client()
     
     # Create a Critic agent
     critic = ChatAgent(

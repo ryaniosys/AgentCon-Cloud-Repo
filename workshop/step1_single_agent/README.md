@@ -17,6 +17,7 @@
 
 From the repository root:
 
+**Linux/macOS:**
 ```bash
 cd /path/to/AgentCon-Cloud-Repo
 python3 -m venv .venv
@@ -24,12 +25,34 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+**Windows (PowerShell):**
+```powershell
+cd C:\path\to\AgentCon-Cloud-Repo
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+**Windows (cmd):**
+```cmd
+cd C:\path\to\AgentCon-Cloud-Repo
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
 ### 2. Configure Environment
 
 Copy the example environment file and configure your provider:
 
+**Linux/macOS:**
 ```bash
 cp .env.example .env
+```
+
+**Windows:**
+```cmd
+copy .env.example .env
 ```
 
 Edit `.env` with your preferred provider. For Azure OpenAI:
@@ -66,16 +89,22 @@ This is the smallest working unit in the Microsoft Agent Framework. We start wit
 
 From the repository root (with venv activated):
 
+**Linux/macOS:**
 ```bash
 source .venv/bin/activate
-cd workshop/step1_single_agent
-python agentcon_demo.py
+python workshop/step1_single_agent/agentcon_demo.py
 ```
 
-Or as a one-liner:
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\Activate.ps1
+python workshop\step1_single_agent\agentcon_demo.py
+```
 
-```bash
-source .venv/bin/activate && python workshop/step1_single_agent/agentcon_demo.py
+**Windows (cmd):**
+```cmd
+.venv\Scripts\activate.bat
+python workshop\step1_single_agent\agentcon_demo.py
 ```
 
 ## Expected Output

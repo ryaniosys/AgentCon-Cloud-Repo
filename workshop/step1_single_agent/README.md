@@ -1,6 +1,6 @@
 # Step 1: Single Agent Critic
 
-**Duration:** 10-15 minutes  
+**Duration:** 10-15 minutes
 **Goal:** Build the simplest working agent and prove the framework works
 
 ## What You'll Learn
@@ -9,7 +9,40 @@
 - How to create a `ChatAgent` with instructions
 - How to run an agent with `.run()`
 - What an agent response looks like
-- How to detect model provider (OpenAI, Ollama, Foundry)
+- How to detect model provider (Azure OpenAI, OpenAI, Ollama, Foundry)
+
+## Prerequisites
+
+### 1. Create Virtual Environment
+
+From the repository root:
+
+```bash
+cd /path/to/AgentCon-Cloud-Repo
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment
+
+Copy the example environment file and configure your provider:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your preferred provider. For Azure OpenAI:
+
+```env
+USE_AZURE_OPENAI=true
+AZURE_OPENAI_API_KEY=your-api-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+AZURE_OPENAI_DEPLOYMENT=your-deployment-name
+AZURE_OPENAI_API_VERSION=2024-02-15-preview
+```
+
+**Note:** The endpoint should be just the base URL, not the full path.
 
 ## 📖 Detailed Learning
 
@@ -31,9 +64,18 @@ This is the smallest working unit in the Microsoft Agent Framework. We start wit
 
 ## Run This Step
 
+From the repository root (with venv activated):
+
 ```bash
+source .venv/bin/activate
 cd workshop/step1_single_agent
 python agentcon_demo.py
+```
+
+Or as a one-liner:
+
+```bash
+source .venv/bin/activate && python workshop/step1_single_agent/agentcon_demo.py
 ```
 
 ## Expected Output

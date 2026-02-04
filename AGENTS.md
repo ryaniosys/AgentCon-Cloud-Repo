@@ -88,17 +88,24 @@ MCP tools are conditionally enabled based on model capabilities:
 Copy `.env.example` to `.env` and configure your preferred model provider:
 
 ```env
-# Option 1: OpenAI (recommended for full functionality)
+# Option 1: Azure OpenAI (recommended for enterprise)
+USE_AZURE_OPENAI=true
+AZURE_OPENAI_API_KEY=your-azure-api-key
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
+AZURE_OPENAI_DEPLOYMENT=your-deployment-name
+AZURE_OPENAI_API_VERSION=2024-02-15-preview
+
+# Option 2: OpenAI (recommended for full functionality)
 USE_OPENAI=true
 OPENAI_API_KEY=sk-your-key
 OPENAI_MODEL=gpt-4o-mini
 
-# Option 2: Ollama (local, free)
+# Option 3: Ollama (local, free)
 USE_OLLAMA=true
 OLLAMA_BASE_URL=http://localhost:11434/v1
 OLLAMA_MODEL=gpt-oss:20b
 
-# Option 3: Microsoft Foundry Local (enterprise)
+# Option 4: Microsoft Foundry Local (enterprise, Windows/macOS only)
 USE_FOUNDRY_LOCAL=true
 LOCAL_BASE_URL=http://localhost:56238/v1
 LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
@@ -113,6 +120,22 @@ LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
 | `refactored/agent_prompts.yaml` | Declarative agent configurations |
 | `workshop/` | 7-step progressive tutorial |
 | `tests/` | Unit and evaluation test suite |
+| `docs/agent-framework-reference.txt` | Microsoft Agent Framework full source digest |
+
+## Framework Reference
+
+The `docs/agent-framework-reference.txt` file contains a complete digest of the [Microsoft Agent Framework](https://github.com/microsoft/agent-framework) repository, generated using [gitingest](https://github.com/cyclotruc/gitingest). Use this as a reference for:
+
+- `ChatAgent` API and configuration options
+- `OpenAIChatClient` initialization and provider setup
+- Tool/function calling patterns
+- MCP integration examples
+- Workflow orchestration patterns
+
+Key classes used in this demo:
+- `agent_framework.ChatAgent` - Core agent class with instructions and tools
+- `agent_framework.openai.OpenAIChatClient` - OpenAI-compatible chat client
+- `openai.AsyncAzureOpenAI` - Azure OpenAI async client (for Azure deployments)
 
 ## Test Markers
 

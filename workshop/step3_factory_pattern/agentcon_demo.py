@@ -2,6 +2,7 @@
 import asyncio, os
 from enum import Enum
 from dotenv import load_dotenv
+from openai import AsyncAzureOpenAI
 from agent_framework import ChatAgent
 from agent_framework.openai import OpenAIChatClient
 
@@ -12,19 +13,22 @@ def get_text(response):
 
 class AgentFactory:
     """Factory pattern: centralized agent creation with multi-provider support"""
-    
+
     def __init__(self, chat_client: OpenAIChatClient):
         self.chat_client = chat_client
-        
-        # Track model capabilities
-        self.model_supports_copilot_messages = os.getenv("USE_OPENAI", "false").lower() == "true"
-        
+
+        # Track model capabilities (Azure OpenAI and OpenAI support copilot messages)
+        self.model_supports_copilot_messages = (
+            os.getenv("USE_AZURE_OPENAI", "false").lower() == "true" or
+            os.getenv("USE_OPENAI", "false").lower() == "true"
+        )
+
         # All agent prompts in one place
         self.prompts = {
-            "critic": """You are an Azure Architecture Critic. 
+            "critic": """You are an Azure Architecture Critic.
 Review for: security issues, wrong service choices, missing best practices.
 Keep brief with bullet points.""",
-            
+
             "fixer": """You are an Azure Architecture Fixer.
 Improve the architecture by:
 - Applying Azure Well-Architected Framework
@@ -32,7 +36,7 @@ Improve the architecture by:
 - Implementing secure-by-default networking
 Output: improved architecture description."""
         }
-    
+
     def create_agent(self, role: str) -> ChatAgent:
         """Create an agent by role - no duplication"""
         return ChatAgent(
@@ -43,11 +47,27 @@ Output: improved architecture description."""
         )
 
 def create_chat_client():
-    """Create chat client from configured provider (OpenAI, Ollama, or Foundry Local)"""
+    """Create chat client from configured provider (Azure OpenAI, OpenAI, Ollama, or Foundry Local)"""
+    use_azure_openai = os.getenv("USE_AZURE_OPENAI", "false").lower() == "true"
     use_openai = os.getenv("USE_OPENAI", "false").lower() == "true"
     use_ollama = os.getenv("USE_OLLAMA", "false").lower() == "true"
-    
-    if use_openai:
+
+    if use_azure_openai:
+        api_key = os.getenv("AZURE_OPENAI_API_KEY")
+        endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+        deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT")
+        api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
+        print(f"🤖 Using Azure OpenAI deployment: {deployment}")
+        azure_client = AsyncAzureOpenAI(
+            api_key=api_key,
+            api_version=api_version,
+            azure_endpoint=endpoint
+        )
+        return OpenAIChatClient(
+            model_id=deployment,
+            async_client=azure_client
+        )
+    elif use_openai:
         model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
         api_key = os.getenv("OPENAI_API_KEY")
         print(f"🤖 Using OpenAI model: {model}")

@@ -74,4 +74,17 @@ In production, you might:
 - Inject different tools per role
 - Add monitoring/logging per agent type
 
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding factory pattern design
+- Why enum over strings
+- Explanation of each code line and "why"
+- How to extend the factory with new roles
+- Integration with multi-provider support
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-3-factory-pattern--scalability)** file!
+
+It covers Step 3 in detail with full explanations.
+
 ## Next: [Step 4 - MCP Grounding →](../step4_mcp_grounding/)

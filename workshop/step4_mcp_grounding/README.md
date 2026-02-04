@@ -86,4 +86,17 @@ The agent decides **when to call the tool** based on instructions. The framework
 - **Compliance:** Ground on regulatory documentation
 - **Research:** Ground on scientific papers/databases
 
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding MCP protocol and grounding
+- How tool invocation works in agents
+- Explanation of each code line and "why"
+- Setting up custom MCP data sources
+- Best practices for tool usage
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-4-mcp-grounding--factual-accuracy)** file!
+
+It covers Step 4 in detail with full explanations.
+
 ## Next: [Step 5 - Visualizer Agent →](../step5_visualizer/)

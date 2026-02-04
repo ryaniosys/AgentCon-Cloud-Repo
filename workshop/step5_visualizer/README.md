@@ -91,4 +91,17 @@ Copy the Mermaid code and paste into:
 - **Data flow:** Show how data moves through system
 - **Incident reports:** Diagram affected components
 
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding role-based tool assignment
+- Mermaid diagram syntax and best practices
+- Explanation of each code line and "why"
+- Validating diagram outputs
+- Advanced prompt engineering for generation
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-5-visualization--diagrams)** file!
+
+It covers Step 5 in detail with full explanations.
+
 ## Next: [Step 6 - IaC Generator →](../step6_iac_generator/)

@@ -117,3 +117,16 @@ Azure Deployment → Infrastructure live
 ```
 
 ## Next: [Step 7 - Image Mode (Bonus) →](../step7_image_mode/)
+
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding IaC and Bicep syntax
+- How to structure Bicep generation prompts
+- Explanation of each code line and "why"
+- Best practices for infrastructure code generation
+- Validation and testing strategies
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-6-infrastructure-as-code--bicep-generation)** file!
+
+It covers Step 6 in detail with full explanations.

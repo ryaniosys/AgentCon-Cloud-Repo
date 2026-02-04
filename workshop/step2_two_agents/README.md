@@ -49,4 +49,17 @@ The Fixer receives **both** the original architecture **and** the critique. This
 - What other agents could we add? (Reviewer, Tester, Documenter)
 - How to handle failures in the pipeline?
 
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding sequential pipelines in depth
+- Passing context between agents
+- Explanation of each code line and "why"
+- Error handling between steps
+- How providers work with two agents
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-2-sequential-pipeline--critic--fixer)** file!
+
+It covers Step 2 in detail with full explanations.
+
 ## Next: [Step 3 - Factory Pattern →](../step3_factory_pattern/)

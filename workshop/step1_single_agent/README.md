@@ -9,6 +9,19 @@
 - How to create a `ChatAgent` with instructions
 - How to run an agent with `.run()`
 - What an agent response looks like
+- How to detect model provider (OpenAI, Ollama, Foundry)
+
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Installation and setup
+- Understanding async/await
+- Explanation of each code line and "why"
+- How providers work
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-1-single-agent--architecture-critic)** file!
+
+It covers Step 1 in detail with full explanations.
 
 ## Key Concepts
 

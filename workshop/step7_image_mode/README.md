@@ -162,3 +162,16 @@ Congratulations! You've built a complete **multimodal AI agent pipeline** that:
 - Add file saving for outputs
 - Create CI/CD integration
 - Explore other MCP sources (GitHub, Slack)
+
+## 📖 Detailed Learning
+
+For a comprehensive walkthrough of this step including:
+- Understanding multimodal AI and vision capabilities
+- How to structure image processing pipelines
+- Explanation of each code line and "why"
+- Best practices for image preprocessing
+- Production considerations for vision-based systems
+
+👉 See the **[TUTORIAL.md](../../TUTORIAL.md#part-7-multimodal-input--image-processing)** file!
+
+It covers Step 7 in detail with full explanations.

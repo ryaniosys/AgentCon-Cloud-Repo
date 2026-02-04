@@ -168,16 +168,43 @@ USE_FOUNDRY_LOCAL=false
    ```
 
 #### Option 3️⃣: Use **Microsoft Foundry Local** (Enterprise)
+Quick Foundry Local (preview) — key steps
 
-1. Start your Foundry Local instance
-2. Set `.env` file:
-   ```
-   USE_FOUNDRY_LOCAL=true
-   LOCAL_BASE_URL=http://your-foundry:56238/v1
-   LOCAL_MODEL=gpt-oss-20b-generic-cpu:1
-   USE_OPENAI=false
-   USE_OLLAMA=false
-   ```
+Note: Foundry Local is preview software; behavior and features may change.
+
+Install (Windows):
+```bash
+winget install Microsoft.FoundryLocal
+```
+Install (macOS):
+```bash
+brew tap microsoft/foundrylocal
+brew install foundrylocal
+```
+
+Verify and run a model:
+```bash
+foundry --version
+foundry model run qwen2.5-0.5b
+```
+
+If a model isn't available for your hardware, pick a smaller alias from `foundry model list`.
+
+Quick env example for this repo:
+```env
+USE_FOUNDRY_LOCAL=true
+LOCAL_BASE_URL=http://127.0.0.1:56238/v1
+LOCAL_MODEL=qwen2.5-0.5b
+USE_OPENAI=false
+USE_OLLAMA=false
+```
+
+Quick troubleshooting:
+- `foundry service status` — check service
+- `foundry service restart` — restart to fix binding issues
+- `foundry service diag` — view service logs
+
+See Foundry docs for driver/execution provider details (CUDA, OpenVINO, QNN, NvTensorRT, VitisAI).
 
 ### Step 1: Clone the Repository
 

@@ -1,6 +1,6 @@
 # Step 1: Single Agent Critic
 
-**Duration:** 10-15 minutes  
+**Duration:** 10-15 minutes
 **Goal:** Build the simplest working agent and prove the framework works
 
 ## What You'll Learn
@@ -10,6 +10,52 @@
 - How to run an agent with `.run()`
 - What an agent response looks like
 - How to detect model provider (OpenAI, Ollama, Foundry)
+
+## Prerequisites
+
+### 1. Create Virtual Environment
+
+From the repository root:
+
+**Linux/macOS:**
+```bash
+cd /path/to/AgentCon-Cloud-Repo
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Windows (PowerShell):**
+```powershell
+cd C:\path\to\AgentCon-Cloud-Repo
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+**Windows (cmd):**
+```cmd
+cd C:\path\to\AgentCon-Cloud-Repo
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment
+
+Copy the example environment file and configure your provider:
+
+**Linux/macOS:**
+```bash
+cp .env.example .env
+```
+
+**Windows:**
+```cmd
+copy .env.example .env
+```
+
+Edit `.env` with your preferred provider (OpenAI, Ollama, or Foundry Local). See `.env.example` for configuration options.
 
 ## 📖 Detailed Learning
 
@@ -31,9 +77,24 @@ This is the smallest working unit in the Microsoft Agent Framework. We start wit
 
 ## Run This Step
 
+From the repository root (with venv activated):
+
+**Linux/macOS:**
 ```bash
-cd workshop/step1_single_agent
-python agentcon_demo.py
+source .venv/bin/activate
+python workshop/step1_single_agent/agentcon_demo.py
+```
+
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\Activate.ps1
+python workshop\step1_single_agent\agentcon_demo.py
+```
+
+**Windows (cmd):**
+```cmd
+.venv\Scripts\activate.bat
+python workshop\step1_single_agent\agentcon_demo.py
 ```
 
 ## Expected Output

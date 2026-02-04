@@ -21,10 +21,29 @@
 - Centralized all prompts in factory
 - Simplified agent creation: `factory.create_agent(AgentRole.CRITIC)`
 
+## Prerequisites
+
+Ensure you've completed the setup from Step 1:
+- Virtual environment created and activated
+- Dependencies installed (`pip install -r requirements.txt`)
+- `.env` configured with your model provider
+
+See [Step 1 README](../step1_single_agent/README.md) for detailed setup instructions.
+
 ## Run This Step
+
+From the repository root (with venv activated):
+
+**Linux/macOS:**
 ```bash
-cd workshop\step3_factory_pattern
-python agentcon_demo.py
+source .venv/bin/activate
+python workshop/step3_factory_pattern/agentcon_demo.py
+```
+
+**Windows (PowerShell):**
+```powershell
+.venv\Scripts\Activate.ps1
+python workshop\step3_factory_pattern\agentcon_demo.py
 ```
 
 ## Expected Output
